@@ -1,4 +1,6 @@
 import db from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+import { url } from "inspector";
 
 export async function POST(req: Request) {
   try {
@@ -22,6 +24,33 @@ export async function POST(req: Request) {
       status: 201
       }); 
   } catch (e: any) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2002") {   
+        return new Response("La URL ya existe", { status: 409 })
+      }
+    }
     return new Response(e.message, { status: 500 });
   }
+}
+
+export async function GET(req: Request, res: Response) {
+    const originalUrl = req.url.split("?")[1].split("=")[1]
+    try {
+      const urlFind = await db.url.findFirst({
+        where: {
+          originalUrl: originalUrl
+        }
+      })
+      if (!urlFind) {
+        return new Response ("Not found", { status: 404 })
+      }
+      else {
+        return new Response(JSON.stringify(urlFind), {
+          headers: { "Content-Type": "application/json" },
+          status: 200
+        });
+      }
+    } catch (e: any) {
+      return new Response(e.message, { status: 500 });
+    }
 }

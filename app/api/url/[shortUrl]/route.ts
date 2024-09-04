@@ -4,10 +4,7 @@ export async function GET(req: Request, { params }: { params: { shortUrl: string
   if (req.method === "GET") {
     const shortUrl = params.shortUrl
     try {
-      const id = parseInt(shortUrl as string, 36) - 10000000000
-      console.log(shortUrl)
-      console.log(parseInt(shortUrl as string, 36))
-      console.log(id)
+      const id = parseInt(shortUrl as string, 36) - 1000000000
       const url = await db.url.findUnique({
         where: {
           id: id
