@@ -10,7 +10,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Url {
+model url {
   id          Int      @id @default(autoincrement())
   shortUrl    String?  @unique
   originalUrl String   @unique
@@ -18,7 +18,7 @@ model Url {
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
 }
 
-model User {
+model user {
   id        Int      @id
   name      String
   email     String   @unique
