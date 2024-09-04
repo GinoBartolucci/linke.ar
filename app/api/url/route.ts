@@ -7,13 +7,13 @@ export async function POST(req: Request) {
     const data = await req.json()
     if (!data) { return new Response("No body provided", { status: 400 }) } 
     const counter = 1000000000 // se pueden generar 9.999.999.999 urls y tener un link de 6 caracteres
-    const urlCreate = await db.url.create({
+    const urlCreate = await db.urls.create({
       data: {
         originalUrl: data.url
       }
     })
     const shortUrl = (counter + urlCreate.id).toString(36)
-    const urlUpdate = await db.url.update({
+    const urlUpdate = await db.urls.update({
       where: { id: urlCreate.id },
       data: {
         shortUrl: shortUrl
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 export async function GET(req: Request, res: Response) {
     const originalUrl = req.url.split("?")[1].split("=")[1]
     try {
-      const urlFind = await db.url.findFirst({
+      const urlFind = await db.urls.findFirst({
         where: {
           originalUrl: originalUrl
         }
