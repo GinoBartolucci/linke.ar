@@ -10,12 +10,12 @@ export default function Home() {
   const [shortUrl, setShortUrl] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
 
-  const urlPattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocolo opcional
-    '((([a-zA-Z0-9$-_@.&+!*"(),]|[0-9a-zA-Z])+)' + // dominio
-    ')?(\\.[a-zA-Z]{2,})+' + // dominio de nivel superior
-    '(\\/([a-zA-Z0-9$-_@.&+!*"(),]|[0-9a-zA-Z])+)*$' // ruta opcional
-  );
+  // const urlPattern = new RegExp(
+  //   '^(https?:\\/\\/)?' + // protocolo opcional
+  //   '((([a-zA-Z0-9$-_@.&+!*"(),]|[0-9a-zA-Z])+)' + // dominio
+  //   ')?(\\.[a-zA-Z]{2,})+' + // dominio de nivel superior
+  //   '(\\/([a-zA-Z0-9$-_@.&+!*"(),]|[0-9a-zA-Z])+)*$' // ruta opcional
+  // );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,7 +24,7 @@ export default function Home() {
     setShortUrl(null)
     const formData = new FormData(event.currentTarget)
     const inputURL = formData.get("inputUrl")
-    if (event.currentTarget.inputUrl.value === "" || inputURL === null || urlPattern.test(inputURL.toString())) {
+    if (event.currentTarget.inputUrl.value === "" || inputURL === null) {
       setError(true)
       setTimeout(() => setError(false), 500)
       setIsLoading(false)
@@ -85,14 +85,14 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center w-full p-3">
         <form className="flex flex-col items-center sm:flex-row m-auto " onSubmit={handleSubmit}>
-          <input className={`p-3 my-2 sm:p-4 sm:mr-2 max-h-[72px] sm:text-2xl lg:text-3xl w-auto sm:w-[330px] lg:w-[500px] bounce-short rounded-2xl placeholder:italic sm:placeholder:text-xl lg:placeholder:text-2xl focus:outline-none ${error ? ' shake border-2 border-red-400 placeholder:text-red-300' : 'border-gray-300'}`} type="text" name="inputUrl" placeholder="Tu URL acá" />
-          <button className="p-3 my-2 sm:p-4 sm:mr-2 sm:w-[170px] font-mulish font-bold text-xl drop-shadow-lg  sm:text-2xl lg:text-3xl hover:bg-black text-slate-300 bg-gray-900 rounded-2xl" type="submit" disabled={isLoading}>
+          <input className={`p-3 my-2 sm:p-4 sm:mr-2 max-h-[72px] sm:text-2xl lg:text-3xl w-full sm:w-[330px] lg:w-[500px] bounce-short rounded-2xl placeholder:italic sm:placeholder:text-xl lg:placeholder:text-2xl focus:outline-none border-2  ${error ? ' shake border-red-400 placeholder:text-red-300' : 'border-transparent'}`} type="text" name="inputUrl" placeholder="Tu URL acá" />
+          <button className="p-3 my-2 sm:p-4 sm:mr-2 sm:w-[170px] font-mulish font-bold text-xl drop-shadow-lg w-full sm:text-2xl lg:text-3xl hover:bg-black text-slate-300 bg-gray-900 rounded-2xl" type="submit" disabled={isLoading}>
             {isLoading ? 'Cargando' : 'Acortar'}
           </button>
         </form>
         <div className="flex p-2 min-h-[110px] items-center">
           <div className="flex m-auto">
-            <input className={`transition-opacity duration-500 p-3 mr-0 my-2 sm:p-4 max-h-[72px] drop-shadow-xl sm:text-2xl lg:text-3xl w-auto sm:w-[330px] lg:w-[500px] rounded-2xl placeholder:italic placeholder:text-xl lg:placeholder:text-2xl focus:outline-none ${copied == true ? 'text-green-600 border-2 border-green-600 text-center' : ''}`} type="text" value={(copied == false) ? (shortUrl == null ? "" : shortUrl) : 'Copiado!'} disabled={shortUrl == null ? true : false} placeholder="Ingrese la URL arriba" />
+            <input className={`transition-opacity duration-500 p-3 mr-0 my-2 sm:p-4 max-h-[72px] drop-shadow-xl sm:text-2xl lg:text-3xl w-auto sm:w-[330px] lg:w-[500px] rounded-2xl placeholder:italic placeholder:text-xl lg:placeholder:text-2xl focus:outline-none border-2 ${copied == true ? 'text-green-600 border-green-600 text-center' : 'border-transparent'}`} type="text" value={(copied == false) ? (shortUrl == null ? "" : shortUrl) : 'Copiado!'} disabled={shortUrl == null ? true : false} placeholder="Ingrese la URL arriba" />
             <button disabled={shortUrl == null ? true : false} className="flex m-auto p-2 sm:p-5 items-center rounded max-h-[72px]" onClick={handleCopy}>
               <FaRegCopy className={`hover:text-black text-gray-600 w-7 h-7  ${copied ? 'hover:text-green-600 text-green-600 ' : ''}`} />
             </button>
