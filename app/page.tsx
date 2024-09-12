@@ -1,12 +1,13 @@
 'use client'
-import Image from "next/image";
-import Head from "next/head";
-import { useState, FormEvent } from "react";
+import Image from "next/image"
+import { useState, FormEvent } from "react"
+import { FaRegCopy } from 'react-icons/fa'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<String | null>(null)
   const [shortUrl, setShortUrl] = useState<String | null>(null)
+  const [copied, setCopied] = useState(false)
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -53,48 +54,41 @@ export default function Home() {
       setIsLoading(false)
     }
   }
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shortUrl as string);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reinicia el estado de "copiado" después de 2 segundos
+    } catch (err) {
+      console.error('Error al copiar el texto: ', err);
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+    <main className="flex items-center h-full flex-col justify-evenly">
+      <div className="relative z-[-1] text-7xl sm:text-9xl lg:text-[10rem] font-protestGuerrilla">
+        Linke.ar
       </div>
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-      <div>
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        <form className="" onSubmit={handleSubmit}>
-          <input type="text" name="inputUrl" placeholder="URL" />
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Acortar'}
+      <div className="">
+        <form className="flex flex-wrap " onSubmit={handleSubmit}>
+          <input className="p-3 my-2 sm:p-4 sm:mr-2 sm:text-2xl lg:text-3xl w-auto sm:w-[330px] lg:w-[500px] bounce-short rounded-2xl placeholder:italic sm:placeholder:text-xl lg:placeholder:text-2xl focus:outline-none " type="text" name="inputUrl" placeholder="Ingrese la URL a acortar" />
+          <button className="p-3 my-2 sm:p-4 sm:mr-2 sm:w-[170px] font-mulish text-lg sm:text-2xl lg:text-3xl hover:bg-black text-slate-300 bg-gray-900 rounded-2xl" type="submit" disabled={isLoading}>
+            {isLoading ? 'Cargando' : 'Acortar'}
           </button>
         </form>
-        {shortUrl === null ? null : <div>{shortUrl}</div>}
-
-      </div>
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        <div className=" flex p-2 min-h-[50px] aling-center">
+          <div className="text-red-500 text-xl sm:text-3xl">{error}</div>
+          {shortUrl === null ? null :
+            <div className="flex items-center  space-x-2">
+              <p className="sm:text-2xl lg:text-3xl">{shortUrl}</p>
+              <button className="flex items-center bg-gray-200 p-2 rounded hover:bg-gray-300" onClick={handleCopy}>
+                <FaRegCopy className="hover:text-black text-gray-600 w-7 h-7" />
+                {copied && <span className="text-green-600 ml-2">¡Copiado!</span>}
+              </button>
+            </div>
+          }
+        </div>
       </div>
     </main>
   );

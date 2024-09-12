@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request, res: Response) {
-    const originalUrl = req.url.split("?")[1].split("=")[1]
+  const originalUrl = decodeURI(req.url.split("?")[1].split("=")[1])
     try {
       const urlFind = await db.urls.findFirst({
         where: {
