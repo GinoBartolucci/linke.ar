@@ -24,7 +24,7 @@ export default function Home() {
     setShortUrl(null)
     const formData = new FormData(event.currentTarget)
     const inputURL = formData.get("inputUrl")
-    if (event.currentTarget.inputUrl.value === "" || inputURL === null || !urlPattern.test(inputURL.toString())) {
+    if (event.currentTarget.inputUrl.value === "" || inputURL === null || urlPattern.test(inputURL.toString())) {
       setError(true)
       setTimeout(() => setError(false), 500)
       setIsLoading(false)
@@ -72,7 +72,7 @@ export default function Home() {
     try {
       await navigator.clipboard.writeText(shortUrl as string);
       setCopied(true);
-      setTimeout(() => setCopied(false), 5000); // Reinicia el estado de "copiado" después de 2 segundos
+      setTimeout(() => setCopied(false), 4500); // Reinicia el estado de "copiado" después de 2 segundos
     } catch (err) {
       console.error('Error al copiar el texto: ', err);
     }
@@ -80,7 +80,7 @@ export default function Home() {
 
   return (
     <main className="flex items-center h-svh flex-col justify-center">
-      <div className=" drop-shadow-lg relative z-[-1] text-7xl mb-32 sm:text-9xl lg:text-[10rem] font-protestGuerrilla">
+      <div className=" drop-shadow-lg relative z-[-1] text-7xl mb-12 sm:text-9xl lg:text-[10rem] font-protestGuerrilla">
         Linke.ar
       </div>
       <div className="flex flex-col items-center w-full p-3">
@@ -92,9 +92,9 @@ export default function Home() {
         </form>
         <div className="flex p-2 min-h-[110px] items-center">
           <div className="flex m-auto">
-            <input className="transition-opacity duration-500 p-3 mr-0 my-2 sm:p-4 max-h-[72px] drop-shadow-xl sm:text-2xl lg:text-3xl w-auto sm:w-[330px] lg:w-[500px] rounded-2xl placeholder:italic placeholder:text-xl lg:placeholder:text-2xl focus:outline-none" type="text" value={(copied == false) ? (shortUrl == null ? "" : shortUrl) : 'Copiado!'} disabled={shortUrl == null ? true : false} placeholder="Ingrese la URL arriba" />
+            <input className={`transition-opacity duration-500 p-3 mr-0 my-2 sm:p-4 max-h-[72px] drop-shadow-xl sm:text-2xl lg:text-3xl w-auto sm:w-[330px] lg:w-[500px] rounded-2xl placeholder:italic placeholder:text-xl lg:placeholder:text-2xl focus:outline-none ${copied == true ? 'text-green-600 border-2 border-green-600 text-center' : ''}`} type="text" value={(copied == false) ? (shortUrl == null ? "" : shortUrl) : 'Copiado!'} disabled={shortUrl == null ? true : false} placeholder="Ingrese la URL arriba" />
             <button disabled={shortUrl == null ? true : false} className="flex m-auto p-2 sm:p-5 items-center rounded max-h-[72px]" onClick={handleCopy}>
-              <FaRegCopy className="hover:text-black text-gray-600 w-7 h-7" />
+              <FaRegCopy className={`hover:text-black text-gray-600 w-7 h-7  ${copied ? 'hover:text-green-600 text-green-600 ' : ''}`} />
             </button>
           </div>
         </div>
