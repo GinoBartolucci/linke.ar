@@ -24,7 +24,7 @@ export default function Home() {
     setShortUrl(null)
     const formData = new FormData(event.currentTarget)
     const inputURL = formData.get("inputUrl")
-    if (!urlPattern.test(event.currentTarget.inputUrl.value)) {
+    if (event.currentTarget.inputUrl.value === "" || inputURL === null || !urlPattern.test(inputURL.toString())) {
       setError(true)
       setTimeout(() => setError(false), 500)
       setIsLoading(false)
