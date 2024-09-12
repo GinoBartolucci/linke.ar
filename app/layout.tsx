@@ -38,7 +38,7 @@ export default function RootLayout({
         <footer className="flex flex-col justify-center aling-center h-[20vh]">
           <div className="flex justify-center p-5 text-2xl font-bold italic">By Gino Bartolucci </div>
           <div className="flex justify-center">
-            <div className="flex space-x-6 pb-5">
+            <div className="flex space-x-6 mb-5">
               <a href="https://ginobartolucci.dev.ar" target="_blank" rel="noopener noreferrer">
                 <FaGlobe className="hover:text-black w-8 h-8 text-gray-600" />
               </a>

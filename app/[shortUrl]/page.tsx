@@ -11,5 +11,5 @@ export default async function ShortUrl({ params }: { params: { shortUrl: String 
   })
   const data = await response.json()
   console.log(data.originalUrl)
-  redirect(data.originalUrl)
+  redirect("https://" + data.originalUrl)
 }

@@ -1,6 +1,5 @@
 import db from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { url } from "inspector";
 
 export async function POST(req: Request) {
   try {
@@ -34,7 +33,8 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request, res: Response) {
-  const originalUrl = decodeURI(req.url.split("?")[1].split("=")[1])
+  const originalUrl = decodeURIComponent(req.url.split("?")[1].split("=")[1])
+  console.log(originalUrl)
     try {
       const urlFind = await db.urls.findFirst({
         where: {
