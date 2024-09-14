@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Protest_Guerrilla, Mulish } from "next/font/google";
 import "./globals.css";
 import { FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa';
+import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,9 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${protest_guerrilla.variable} ${mulish.variable}`}>
-        <div className="h-[80vh] ">
-          {children}
-        </div>
+        <Providers>
+          <div className="h-[80vh] ">
+            {children}
+          </div>
+        </Providers>
         <footer className="flex flex-col justify-center aling-center h-[20vh]">
           <div className="flex justify-center p-5 text-2xl font-bold italic">By Gino Bartolucci </div>
           <div className="flex justify-center">
