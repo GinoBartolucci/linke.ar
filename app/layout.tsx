@@ -23,6 +23,9 @@ const mulish = Mulish({
 export const metadata: Metadata = {
   title: "linkear",
   description: "By Gino Bartolucci",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

@@ -8,9 +8,25 @@ export default function Home() {
   const [error, setError] = useState(false)
   const [shortUrl, setShortUrl] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [logged, setLogged] = useState(false)
 
   const { data: Session } = useSession()
   console.log(Session)
+
+  async function logIn(prov: string) {
+    if (prov === "none") {
+      setLogged(true)
+      return
+    }
+    else {
+      await signIn(prov)
+    }
+  }
+
+  function logOut() {
+    setLogged(false)
+    signOut()
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -78,7 +94,7 @@ export default function Home() {
       <div className=" drop-shadow-lg relative z-[-1] text-7xl mb-12 sm:text-9xl lg:text-[10rem] font-protestGuerrilla">
         Linke.ar
       </div>
-      {Session?.user ?
+      {logged || Session?.user ?
         <>
           <div className="flex flex-col justify-center items-center p-3">
             <form className="flex flex-col items-center sm:flex-row m-auto " onSubmit={handleSubmit} >
@@ -97,15 +113,23 @@ export default function Home() {
             </div>
             {shortUrl && <p className="text-sm font-semibold">*Esta es una demo. El link seria: {shortUrl?.replace("linke-ar.ginobartolucci.com.ar/", "linke.ar/")} </p>}
           </div>
-          <button onClick={() => signOut()} className="justify-self-end p-3 bg-white hover:bg-gray-100 text-lg drop-shadow-lg">
-            Cerrar sesión
-          </button>
+          {Session?.user ?
+            <button onClick={() => logOut()} className="justify-self-end p-3 bg-white hover:bg-gray-100 text-lg drop-shadow-lg">
+              Cerrar sesión
+            </button>
+            : null
+          }
         </>
         :
-        <button onClick={() => signIn("google")} className="flex items-center p-3 my-2 bg-white hover:bg-gray-100 text-lg drop-shadow-lg">
-          <FaGoogle className="w-6 h-6 mr-2" />
-          Iniciar sesión con Google
-        </button>
+        <div className="flex flex-col justify-center items-center">
+          <button onClick={() => logIn("google")} className="flex items-center p-3 my-2 bg-white hover:bg-gray-100 text-lg drop-shadow-lg">
+            <FaGoogle className="w-6 h-6 mr-2" />
+            Iniciar sesión con Google
+          </button>
+          <button onClick={() => logIn("none")} className="justify-self-end p-3 bg-white hover:bg-gray-100 text-lg drop-shadow-lg">
+            Continuar sin iniciar sesión
+          </button>
+        </div>
       }
     </main>
   );
